@@ -98,8 +98,8 @@ var Engine = (function(global) {
             //enemy.checkPlayerContact(); ---no
             //enemy.collision();
             //console.log(player.contact(enemy));
-            let answer=player.contact(enemy);
-            console.log(answer+" from engine.js");
+            let answer=player.contact(enemy,'h');
+            //console.log(answer+" from engine.js");
             (answer) ? player.died() : false;
         });
         //player.update();

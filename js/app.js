@@ -11,15 +11,36 @@ class Entity {
     }
 
     render() {
+        //console.log(this.sprite);
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 
-    contact(movingObject) {
-        if (movingObject.y===this.y-10) {
-            return( (Math.abs((movingObject.x+50.5)-(this.x+50.5))<=101) ? true : false );
-        } else {
-           return(false);
+    contact(movingObject,vector) {  // v and h don't match vector correctly and
+                                    //the numbers aren't right - works but need to fix
+                                    //for readablility
+
+        switch(vector) {
+            case 'v':   //verticle
+                if (movingObject.x===this.x) {
+                    return( (Math.abs((movingObject.y+85.5)-(this.y+85.5))<=101) ? true : false );
+                } else {
+                   return(false);
+                }
+                break;
+
+            case 'h':   //horzontal
+                if (Math.abs(movingObject.y-this.y)<=25) {
+                    return( (Math.abs((movingObject.x+50.5)-(this.x+50.5))<=101) ? true : false );
+                } else {
+                   return(false);
+                }
+                break;
+
+            default:
+                return(false);
+
         }
+
     }
 }
 
@@ -35,17 +56,18 @@ class Rock extends Entity {
     }
 
     placement() {
-        //randomly select col 2 3 or 4
-        //randomly select row 2 3 or 4
-        //place rock
-        //getSpeed(0,3)*83
-        this.y=getSpeed(2,4)*83-19
-        this.x=getSpeed(2,4)*101
+
+        this.y=getSpeed(2,4)*83-19  //random row 2-4
+        this.x=getSpeed(2,4)*101    //random col 2-4
         this.isRock=true;
 
     }
 
-    //need an update()
+    contact(movingObject,vector) {
+        return(super.contact(movingObject,vector));
+     }
+
+    //need an update() ?
 }
 
 class Bugs extends Entity {
@@ -58,41 +80,34 @@ class Bugs extends Entity {
         super.render();
     }
 
-    // update(dt) {
-    //     if (this.x+this.speed*(dt*100) > 505) {
-    //         this.setBug();
-    //     } else {
-    //         this.x+=Math.floor(this.speed*(dt*100*this.dir));
-    //     }
-    // }
 
     update(dt) {
         this.x+=(Math.floor(this.speed*(dt*100)))*this.dir;
         // console.log(this.x);
+        if (rock.contact(this,'h')) {
+            this.dir=this.dir*-1;
+        }
         switch(this.dir) {
             case 1:
                 if (this.x > 505) {
                     this.setBug();
-                } //else {
-                    //let temp=Math.floor(this.speed*(dt*100*this.dir));
-                   // this.x+=Math.floor(this.speed*(dt*100*this.dir));
-                    //this.x+=speedIncr;
-                //}
-                //console.log(this.dir+" / "+temp);
+                }
+                this.sprite='images/enemy-bug.png';
                 break;
             case -1:
                 if (this.x < -110) {
                     this.setBug();
-                } //else {
-                    //this.x-=Math.floor(this.speed*(dt*100*this.dir));
-                //}
-
+                }
+                this.sprite='images/enemy-bug-l.png';
         }
-        //console.log(this.x);
     }
 
-    contact(movingObject) {
-        return(super.contact(movingObject));
+    switchBug() {
+
+    }
+
+    contact(movingObject,vector) {
+        return(super.contact(movingObject,vector));
      }
 
     setBug() {
@@ -150,32 +165,33 @@ class Player extends Entity {
                 this.livesLeft-=1;
      }
 
-     contact(movingObject) {
-        return(super.contact(movingObject));
+     contact(movingObject,vector) {
+        return(super.contact(movingObject,vector));
      }
 
     handleInput(key) {
         switch(key) {
             case 'left':
-                if (!(this.x===0)) {
+                if (!(this.x===0) && !(rock.contact(this,'h'))) {
+                    //console.log(rock.contact(this,'h'));
                     this.x-=101;
                 }
                 break;
 
             case 'up':
-                if (!(this.y<=0)){
+                if (!(this.y<=0) && !(rock.contact(this,'v'))){
                 this.y-=83;
                 }
                 break;
 
             case 'right':
-                if (!(this.x===404)) {
+                if (!(this.x===404) && !(rock.contact(this,'h'))) {
                     this.x+=101;
                 }
                 break;
 
             case 'down':
-            if (!(this.y>3*83)) {
+            if (!(this.y>3*83) && !(rock.contact(this,'v'))) {
                 this.y+=83;
             }
         }
