@@ -82,6 +82,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
+
         // checkCollisions();
     }
 
@@ -101,8 +102,10 @@ var Engine = (function(global) {
             let answer=player.contact(enemy,'h');
             //console.log(answer+" from engine.js");
             (answer) ? player.died() : false;
+
         });
         //player.update();
+        gem.update(dt);
 
     }
 
@@ -167,6 +170,8 @@ var Engine = (function(global) {
         //lives.render();
         //render score panel?
         rock.render();
+        star.render();
+        (gem.active) ? gem.render() : false ;
     }
 
     /* This function does nothing but it could have been a good place to
@@ -188,8 +193,11 @@ var Engine = (function(global) {
         'images/enemy-bug.png',
         'images/char1.png',
         'images/gem1.png',
+        'images/gem2.png',
+        'images/gem3.png',
         'images/enemy-bug-l.png',
-        'images/rock.png'
+        'images/rock.png',
+        'images/star.png'
     ]);
     Resources.onReady(init);
 
