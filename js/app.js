@@ -159,18 +159,20 @@ class Bugs extends Entity {
         return(super.contact(movingObject,vector));
      }
 
+
+
     reset() {
         switch(this.dir){
             case 1:
                this.x=-110;
                 this.y=63+(getSpeed(0,3)*83);  //use getSpeed to set row
-                this.speed= getSpeed(100,300)/100;
+                this.speed= getSpeed(100,(player.level+1)*100)/100;
                 break;
             case -1:
                 //this.sprite='images/enemy-bug-l.png'
                 this.x=550;
                 this.y=63+(getSpeed(0,3)*83);  //use getSpeed to set row
-                this.speed= getSpeed(100,300)/100;
+                this.speed= getSpeed(100,(player.level+1)*100)/100;
                 break;
             default:
                 this.dir=1;
@@ -204,6 +206,7 @@ class Gem extends Bugs {
         }
         if (player.contact(this,'h')) {
             player.gems+=1;
+            player.livesLeft+=1;
             this.x=-100;
             this.active=false;
 
@@ -230,6 +233,8 @@ class Gem extends Bugs {
         //this.bounce=false;
      }
 }
+
+
 
 class Player extends Entity {
     constructor( sprite,x,y,leftOffset,rightOffset) {
@@ -265,6 +270,7 @@ class Player extends Entity {
         resetBugs();
         rock.placement();
         star.placement();
+        gem.reset();
         this.x=2*101;
         this.y=4*83-10;
     }
@@ -276,17 +282,9 @@ class Player extends Entity {
 
         this.x=2*101;
         this.y=4*83-10;
-        if (this.livesLeft===0) {
-            if (this.gems > 0) {
-                this.gems-=1;
-                //keep playing
-            } else {
-                //game over - whatever that means
-            }
-        } else {
-            this.livesLeft-=1;
-        }
 
+            this.livesLeft-=1;
+        gem.reset();
         resetBugs();
         rock.placement();
 
@@ -351,10 +349,43 @@ class Player extends Entity {
 }
 
 
+
+    function resetBugs() {
+        allEnemies.map(bug => bug.reset());
+    }
+
+    function initPieces(bugNum=player.level+2) {
+
+        player=new Player('images/char1.png',202,322);
+        //bugs
+        allEnemies=[];
+
+        for(let i=0; i<bugNum; i++) {
+            let enemyObj=new Bugs('images/enemy-bug.png');
+            allEnemies.push(enemyObj);
+            enemyObj.reset();
+        }
+
+        //player
+
+        //other pieces
+        rock=new Rock();  //placement needs to be called before it shows up
+        rock.placement();
+        star=new Star();
+        star.placement();
+        //console.log(star.x+"/"+star.y);
+        gem=new Gem();
+        gem.x=-100;
+        gem.y=0;
+        gem.dir=0;
+    }
+
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 //var allEnemies=[];
+
 
 initPieces(3);
 
@@ -370,31 +401,7 @@ initPieces(3);
 //     }
 // }
 
-function resetBugs() {
-    allEnemies.map(bug => bug.reset());
-}
 
-function initPieces(bugNum=3) {
-    //bugs
-    for(let i=0; i<bugNum; i++) {
-        let enemyObj=new Bugs('images/enemy-bug.png');
-        allEnemies.push(enemyObj);
-        enemyObj.reset();
-    }
-
-    //player
-    player=new Player('images/char1.png',202,322);
-    //other pieces
-    rock=new Rock();  //placement needs to be called before it shows up
-    rock.placement();
-    star=new Star();
-    star.placement();
-    //console.log(star.x+"/"+star.y);
-    gem=new Gem();
-    gem.x=-100;
-    gem.y=0;
-    gem.dir=0;
-}
 
 
 
@@ -417,3 +424,48 @@ document.addEventListener('keyup', function(e) {
 function getSpeed(min,max) {
     return Math.floor(Math.random()*(max-min)) + min;
 }
+
+function gameReset() {
+    //clear / reinitialize all entities
+    //
+}
+
+function startGame() {
+    //open the modal prior to first game play
+
+        //catch esc key to close modal
+    //document.addEventListener('keydown', escClose);
+
+    let modal=document.getElementById('startModal');
+    let startGameButton=document.querySelectorAll('#startModal #start')[0];
+    // let yesButton=document.querySelectorAll('#resetModal #reset-yes')[0];
+
+    modal.style.display="block";
+
+
+
+
+    startGameButton.onclick=function() {
+        modal.style.display="none";
+        //activate whatever the game start function is
+        initPieces();
+
+    }
+
+    window.onclick=function(event) {
+        if (event.target===modal) {
+            modal.style.display="none";
+            //start game
+            initPieces();
+            }
+        }
+
+
+
+}
+
+
+
+
+
+document.body.onload=startGame();

@@ -7,12 +7,134 @@
     <link href="https://fonts.googleapis.com/css?family=Combo" rel="stylesheet">
 </head>
 <body>
-    <div>
-        <p>Score: xx   character:   Lives   </p>
-    </div>
+
+<!-- start game modal with instructions -->
+
+<!-- <div class="reset__modal" id="resetModal"> -->
+<div class="start__modal" id="startModal">
+    <div class="modal__content">  <!-- this is the container element -->
+        <div class="modal__row sm__header"> </div>
+        <div class="modal__row">
+            <div class="sm__graphic_box">
+                <!-- 20% arrow graphic/icon here -->
+                <div class="modal__row">
+                    <div class="sm__keys_box">
+                        <span></span>
+                    </div>
+                    <div class="sm__keys_box">
+                        <span class="glyphicon glyphicon-chevron-up"></span>
+                    </div>
+                    <div class="sm__keys_box">
+                        <span></span>
+                    </div>
+
+                </div>
+                <div class="modal__row">
+                    <div class="sm__keys_box">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </div>
+                    <div class="sm__keys_box">
+                        <span></span>
+                    </div>
+                    <div class="sm__keys_box">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </div>
+                </div>
+                <div class="modal__row">
+                    <div class="sm__keys_box">
+                        <span></span>
+                    </div>
+                    <div class="sm__keys_box">
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </div>
+                    <div class="sm__keys_box">
+                        <span></span>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="sm__text_box">
+                <!-- 80% arrow keys descriptive text goes here -->
+                <p>Use the arrow keys to cross the path to the water and collect the stars without getting hit by a bug or you lose a turn.</p>
+            </div>
+        </div>
+        <div class="modal__row">
+            <div class="sm__graphic_box">
+                <!-- 20% star graphic/icon here -->
+                <img src="images/star.png" width="40px" height="68px">
+            </div>
+            <div class="sm__text_box">
+                <!-- 80% stars descriptive text goes here -->
+                <p>You gain a point for every star you collect.  How many can you collect before the game is over?</p>
+
+            </div>
+        </div>
+        <div class="modal__row">
+            <div class="sm__graphic_box">
+                <!-- 20% gem graphic/icon here -->
+                <img src="images/gem2.png" width="30px" height="51px">
+            </div>
+            <div class="sm__text_box">
+                <!-- 80% gem descriptive text goes here -->
+                <p>Gems will travel across the path just like bugs but if you can catch them, you get extra turns.</p>
+            </div>
+        </div>
+        <div class="modal__row">
+            <div class="sm__graphic_box">
+                <span class="glyphicon glyphicon-menu-hamburger"></span>
+                <!-- 20% burger graphic/icon here -->
+            </div>
+            <div class="sm__text_box">
+                <!-- 80% burger descriptive text goes here -->
+                <p>Click on the hamburger icon to change your character or your level and to reset the game.</p>
+            </div>
+        </div>
+        <div class="modal__row">
+            <div class="modal__btns--align">
+                <button class="modal__btns" id="start">
+                    Start Game
+                </button>
+            </div>
+        </div>
+
+
+
+
+<!--         <div class="modal__row reset__header">
+            Reset Game
+        </div>
+        <div class="modal__row reset__msg">
+            <p>
+                Do you really want to reset the game and lose your current progress?
+            </p>
+        </div>
+        <div class="modal__row">
+            <div class="modal__btns--align">
+                <button class="modal__btns" id="reset-yes">
+                    Yes
+                </button>
+            </div>
+            <div class="modal__btns--align">
+                <button class="modal__btns" id="reset-no">
+                    No
+                </button>
+            </div>
+        </div> -->
+    </div>  <!-- modal content div -->
+</div>   <!-- start modal -->
+
+<!-- options modal for player and level mod -->
+
+<!-- game over modal with reset -->
+
+
+
     <script src="js/resources.js"></script>
-    <script src="js/app.js"></script>
+
     <script src="js/engine.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
 
