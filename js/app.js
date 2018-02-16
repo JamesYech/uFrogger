@@ -154,7 +154,7 @@ class Bugs extends Entity {
     }
 
     makeGem() {
-        if (getSpeed(0,10)===2 && !(gem.active)) {
+        if (getSpeed(0,10)===2 && !(gem.active) && (player.livesLeft<5)) {
 
             console.log('2');
             //allEnemies.push(gem);
