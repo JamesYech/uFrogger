@@ -18,7 +18,11 @@ class Entity {
 
     render() {
         //console.log(this.sprite);
+        if (this.constructor.name==='Rock') {
+            ctx.drawImage(Resources.get(this.sprite), this.x+10, this.y+20, 80,136);
+        } else {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+        }
     }
 
     contact(movingObject,vector) {  //v or h
@@ -107,6 +111,8 @@ class Star extends Entity {
 class Bugs extends Entity {
     constructor( sprite='images/enemy-bug.png',x,y,speed,dir,leftOffset,rightOffset,bounce) {
         super(sprite,x,y,speed,dir,leftOffset,rightOffset,bounce);
+        this.leftOffset=-15;
+        this.rightOffset=15;
 
 
     }
@@ -119,11 +125,17 @@ class Bugs extends Entity {
     update(dt) {
         this.x+=(Math.floor(this.speed*(dt*100)))*this.dir;
         // console.log(this.x);
-        if (rock.contact(this,'h')) {
-            this.dir=this.dir*-1;
-            this.bounce=true;
 
+
+        if (!(this.bounce)) {
+            if (rock.contact(this,'h')) {
+
+                this.dir=this.dir*-1;
+                this.bounce=true;
+
+            }
         }
+
         switch(this.dir) {
             case 1:
                 if (this.x > 505) {
@@ -185,9 +197,11 @@ class Bugs extends Entity {
 
 class Gem extends Bugs {
     constructor(sprite,x,y,speed,dir,leftOffset,rightOffset,bounce) {
-        super(sprite,x,y,speed,dir=1,leftOffset,rightOffset,bounce);
+        super(sprite,x,y,speed,dir,leftOffset,rightOffset,bounce);
+        this.dir=1;
         this.active=false;
-        this.leftOffset=-38;
+        this.leftOffset=-53;
+        this.rightOffset=15;
         //this.bounce=false;
     }
     render() {
