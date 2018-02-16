@@ -10,7 +10,7 @@
 
 <!-- start game modal with instructions -->
 
-<!-- <div class="reset__modal" id="resetModal"> -->
+
 <div class="start__modal" id="startModal">
     <div class="modal__content">  <!-- this is the container element -->
         <div class="modal__row sm__header"> </div>
@@ -52,9 +52,7 @@
                     </div>
                 </div>
 
-
-
-            </div>
+           </div>
             <div class="sm__text_box">
                 <!-- 80% arrow keys descriptive text goes here -->
                 <p>Use the arrow keys to cross the path to the water and collect the stars without getting hit by a bug or you lose a turn.</p>
@@ -99,33 +97,85 @@
             </div>
         </div>
 
-
-
-
-<!--         <div class="modal__row reset__header">
-            Reset Game
-        </div>
-        <div class="modal__row reset__msg">
-            <p>
-                Do you really want to reset the game and lose your current progress?
-            </p>
-        </div>
-        <div class="modal__row">
-            <div class="modal__btns--align">
-                <button class="modal__btns" id="reset-yes">
-                    Yes
-                </button>
-            </div>
-            <div class="modal__btns--align">
-                <button class="modal__btns" id="reset-no">
-                    No
-                </button>
-            </div>
-        </div> -->
     </div>  <!-- modal content div -->
 </div>   <!-- start modal -->
 
 <!-- options modal for player and level mod -->
+
+<div class="options__modal" id="optionsModal">
+    <div class="modal__content">  <!-- this is the container element -->
+        <div class="modal__row op__header">Game Options</div>
+        <div class="modal__row">Choose your character</div>
+        <div class="modal__row">
+            <div class="op__char_box"></div>
+            <div class="op__char_box">
+                <label>
+                    <img src="images/char1.png" class="modal__char">
+                    <input type="radio" name="charlist" value="images/char1.png" class="char_radio"/>
+                </label>
+            </div>
+            <div class="op__char_box">
+                <label>
+                    <img src="images/char2.png" class="modal__char">
+                    <input type="radio" name="charlist" value="images/char2.png"/>
+                </label>
+            </div>
+            <div class="op__char_box">
+                <label>
+                    <img src="images/char3.png" class="modal__char">
+                    <input type="radio" name="charlist" value="images/char3.png"/>
+                </label>
+            </div>
+            <div class="op__char_box">
+                <label>
+                    <img src="images/char4.png" class="modal__char">
+                    <input type="radio" name="charlist" value="images/char4.png"/>
+                </label>
+            </div>
+            <div class="op__char_box">
+                <label>
+                    <img src="images/char5.png" class="modal__char">
+                    <input type="radio" name="charlist" value="images/char5.png"/>
+                </label>
+            </div>
+            <div class="op__char_box"></div>
+        </div>   <!-- end of char row -->
+        <div class="modal__row">Choose your level</div>
+        <div class="modal__row">
+            <div class="op__level_box" ></div>
+            <div class="op__level_box">
+                <label>
+                    <img src="images/smiley_easy.png" width="59" height="58">
+                    <input type="radio" name="level" value="1"/>
+                </label>
+            </div>
+             <div class="op__level_box">
+                <label>
+                    <img src="images/smiley_medium.png" width="59" height="58">
+                    <input type="radio" name="level" value="2"/>
+                </label>
+            </div>
+            <div class="op__level_box">
+                <label>
+                    <img src="images/smiley_hard.png" width="59" height="58">
+                    <input type="radio" name="level" value="3"/>
+                </label>
+            </div>
+            <div class="op__level_box" ></div>
+        </div>  <!-- end of level row -->
+
+        <div class="modal__row">
+            <div class="modal__btns--align">
+                <button class="modal__btns" id="ok">
+                    OK
+                </button>
+            </div>
+        </div>
+
+
+    </div>  <!-- modal content div -->
+</div>   <!-- options modal -->
+
 
 <!-- game over modal with reset -->
 

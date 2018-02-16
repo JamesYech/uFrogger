@@ -1,4 +1,5 @@
 var allEnemies=[];
+var gameLevel=1;
 //board game entities are built from this
 class Entity {
     constructor(sprite="",x=0,y=0,speed=0,dir=1,sector=0) {
@@ -178,13 +179,13 @@ class Bugs extends Entity {
             case 1:
                this.x=-110;
                 this.y=63+(getSpeed(0,3)*83);  //use getSpeed to set row
-                this.speed= getSpeed(100,(player.level+1)*100)/100;
+                this.speed= getSpeed(100,(gameLevel+1)*100)/100;
                 break;
             case -1:
                 //this.sprite='images/enemy-bug-l.png'
                 this.x=550;
                 this.y=63+(getSpeed(0,3)*83);  //use getSpeed to set row
-                this.speed= getSpeed(100,(player.level+1)*100)/100;
+                this.speed= getSpeed(100,(gameLevel+1)*100)/100;
                 break;
             default:
                 this.dir=1;
@@ -255,28 +256,32 @@ class Player extends Entity {
         super(sprite,x,y,leftOffset,rightOffset);
         this.livesLeft=3;
         this.score=0;
-        this.level=1;
+
         this.gems=0;
     }
 
     render() {
         super.render();
         //render lives
-        ctx.drawImage(Resources.get(this.sprite), 5, 498,50,85);
+        ctx.drawImage(Resources.get(this.sprite), 5, 514,50,85);
         ctx.font="30px Combo";
-        ctx.fillText("x"+this.livesLeft,53,565);
+        ctx.fillText("x"+this.livesLeft,53,581);
         //render level
         ctx.font="30px Combo";
-        ctx.fillText("L:"+this.level,133,565);
+        ctx.fillText("L:"+gameLevel,133,581);
         //render gems
-        ctx.drawImage(Resources.get('images/gem1.png'), 218, 517,30,51);
+        ctx.drawImage(Resources.get('images/gem1.png'), 218, 533,30,51);
         ctx.font="30px Combo";
-        ctx.fillText("x"+this.gems,253,565);
+        ctx.fillText("x"+this.gems,253,581);
         //render score
-        ctx.drawImage(Resources.get('images/star.png'), 310, 510,40,68);
+        ctx.drawImage(Resources.get('images/star.png'), 310, 526,40,68);
 
         ctx.font="30px Combo";
-        ctx.fillText("x"+this.score,348,565);
+        ctx.fillText("x"+this.score,353,581);
+
+        ctx.drawImage(Resources.get('images/burger.png'),450,547, 40, 40);
+
+
     }
 
     survived() {
@@ -368,12 +373,13 @@ class Player extends Entity {
         allEnemies.map(bug => bug.reset());
     }
 
-    function initPieces(bugNum=player.level+2) {
+    function initPieces(sprite='images/char1.png') {
 
-        player=new Player('images/char1.png',202,322);
+        let bugNum=gameLevel+2;
+        player=new Player(sprite,202,322);
         //bugs
         allEnemies=[];
-
+        console.log(bugNum);
         for(let i=0; i<bugNum; i++) {
             let enemyObj=new Bugs('images/enemy-bug.png');
             allEnemies.push(enemyObj);
@@ -401,7 +407,7 @@ class Player extends Entity {
 //var allEnemies=[];
 
 
-initPieces(3);
+initPieces();
 
 // number of enemies = easy = 3 medium=5 hard=5+faster
 
@@ -431,9 +437,18 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
-}
-
+    }
 );
+
+document.addEventListener('click', function(e) {
+    if (e.clientX>440 && e.clientY>540) {
+        console.log('right place');
+        gameOptions();
+    }
+
+    }
+);
+
 
 function getSpeed(min,max) {
     return Math.floor(Math.random()*(max-min)) + min;
@@ -443,6 +458,91 @@ function gameReset() {
     //clear / reinitialize all entities
     //
 }
+
+function gameOptions() {
+
+
+    let modal=document.getElementById('optionsModal');
+    let okButton=document.querySelectorAll('#optionsModal #ok')[0];
+    // let yesButton=document.querySelectorAll('#resetModal #reset-yes')[0];
+
+    modal.style.display="block";
+
+    //let radios=document.getElementsByName('level');
+
+    // radios.map(button => function(button) {
+    //     if (button.value===this.level) {
+    //         button.checked=true;
+    //     }
+    // });
+    checkRadios('level',gameLevel);
+    checkRadios('charlist',player.sprite);
+
+
+    function checkRadios(rbName,rbCurrent) {
+        let radios=document.getElementsByName(rbName);
+        for (let i=0,length=radios.length;  i<length; i++) {
+            console.log(rbCurrent+" - "+radios[i].value);
+            if (radios[i].value==rbCurrent) {
+                console.log(radios[i].checked);
+                radios[i].checked=true;
+                console.log(radios[i].checked);
+            } else {
+                radios[i].checked=false;
+            }
+        }
+    }
+
+
+    okButton.onclick=function() {
+        modal.style.display="none";
+        //activate whatever the game start function is
+        //initPieces();
+
+        //need to set level and char
+
+        gameLevel=parseInt(getRadios('level'));
+        // player.sprite=getRadios('charlist');
+        initPieces(getRadios('charlist'));
+
+        // let radios=document.getElementsByName('charlist');
+        //     for (let i=0,length=radios.length;  i<length; i++) {
+
+        //         if (radios[i].checked===true) {
+
+        //             player.sprite=radios[i].value;
+
+        //         }
+        //     }
+
+
+        function getRadios(rbName) {
+            let radios=document.getElementsByName(rbName);
+            for (let i=0,length=radios.length;  i<length; i++) {
+                //console.log(rbCurrent+" - "+radios[i].value);
+                //console.log(radios[i].checked);
+                if (radios[i].checked===true) {
+                    //console.log(radios[i].value);
+                    //console.log(radios[i].checked);
+                    return(radios[i].value);
+                    //onsole.log(player.sprite);
+                }
+            }
+        }
+
+    }
+
+    window.onclick=function(event) {
+        if (event.target===modal) {
+            modal.style.display="none";
+            //start game
+            //initPieces();
+            //need to set level and char
+            }
+        }
+
+}
+
 
 function startGame() {
     //open the modal prior to first game play
