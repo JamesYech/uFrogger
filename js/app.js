@@ -1,6 +1,7 @@
 var allEnemies=[];
 var gameLevel=1;
-//board game entities are built from this
+
+//game entities are built from this
 class Entity {
     constructor(sprite="",x=0,y=0,speed=0,dir=1,sector=0) {
         this.sprite=sprite;
@@ -8,17 +9,12 @@ class Entity {
         this.y=y;
         this.speed=speed;
         this.dir=dir;  //1=left to right -1=right to left direction
-        //this.sector;
-        //had to introduce offsets because gems had to be sized down which threw off their margins and
-        //made them 'bounce' off the rocks too soon.
         this.leftOffset=0; //negative number
         this.rightOffset=0;//positive number
         this.bounce=false;
-
     }
 
     render() {
-        //console.log(this.sprite);
         if (this.constructor.name==='Rock') {
             ctx.drawImage(Resources.get(this.sprite), this.x+10, this.y+20, 80,136);
         } else {
@@ -27,14 +23,12 @@ class Entity {
     }
 
     contact(movingObject,vector) {  //v or h
-
         let offset;
         (movingObject.dir>0) ? offset=movingObject.leftOffset : offset=movingObject.rightOffset;
         switch(vector) {
 
             case 'h':  //left or right
                 if (Math.abs(movingObject.y-this.y)<=17) {  //in same row (y's align)
-                    //return( (Math.abs((movingObject.x+((101+offset)*movingObject.dir))-this.x)<=5) ? true : false );
                     return( (Math.abs((movingObject.x+offset)-this.x)<=101) ? true : false );
                 } else {
                     return(false);
@@ -51,17 +45,13 @@ class Entity {
 
             default:
                 return(false);
-
         }
-
     }
 }
 
 class Rock extends Entity {
     constructor(sprite='images/rock.png',x,y,leftOffset,rightOffset) {
         super(sprite,x,y,leftOffset,rightOffset);
-
-
     }
 
     render() {
@@ -69,25 +59,19 @@ class Rock extends Entity {
     }
 
     placement() {
-
-        this.y=getSpeed(1,4)*83-19  //random row 2-4
-        this.x=getSpeed(1,4)*101    //random col 2-4
-        this.isRock=true;
-
+        this.y=rndNumbers(1,4)*83-19  //random row 2-4
+        this.x=rndNumbers(1,4)*101    //random col 2-4
+        //this.isRock=true;
     }
 
     contact(movingObject,vector) {
         return(super.contact(movingObject,vector));
      }
-
-
 }
 
 class Star extends Entity {
     constructor(sprite='images/star.png',x,y,leftOffset,rightOffset) {
         super(sprite,x,y,leftOffset,rightOffset);
-
-
     }
 
     render() {
@@ -95,18 +79,13 @@ class Star extends Entity {
     }
 
     placement() {
-
         this.y=0-10;
-        this.x=getSpeed(0,5)*101    //random col 1-5
-
-
+        this.x=rndNumbers(0,5)*101    //random col 1-5
     }
 
     contact(movingObject,vector) {
         return(super.contact(movingObject,vector));
      }
-
-
 }
 
 class Bugs extends Entity {
@@ -114,28 +93,22 @@ class Bugs extends Entity {
         super(sprite,x,y,speed,dir,leftOffset,rightOffset,bounce);
         this.leftOffset=-15;
         this.rightOffset=15;
-
-
     }
 
     render() {
         super.render();
     }
 
-
     update(dt) {
         this.x+=(Math.floor(this.speed*(dt*100)))*this.dir;
-        // console.log(this.x);
-
-
         if (!(this.bounce)) {
             if (rock.contact(this,'h')) {
-
                 this.dir=this.dir*-1;
                 this.bounce=true;
-
             }
         }
+
+        (player.contact(this,'h')) ? player.died() : false;
 
         switch(this.dir) {
             case 1:
@@ -155,42 +128,32 @@ class Bugs extends Entity {
     }
 
     makeGem() {
-        if (getSpeed(0,10)===2 && !(gem.active) && (player.livesLeft<5)) {
-
-            console.log('2');
-            //allEnemies.push(gem);
-            gem.sprite='images/gem'+getSpeed(1,4)+'.png';
+        if (rndNumbers(0,10)===2 && !(gem.active) && (player.livesLeft<5)) {
+            gem.sprite='images/gem'+rndNumbers(1,4)+'.png';
             gem.active=true;
             gem.reset();
-
-
         }
-
     }
 
     contact(movingObject,vector) {
         return(super.contact(movingObject,vector));
      }
 
-
-
     reset() {
         switch(this.dir){
             case 1:
-               this.x=-110;
-                this.y=63+(getSpeed(0,3)*83);  //use getSpeed to set row
-                this.speed= getSpeed(100,(gameLevel+1)*100)/100;
+                this.x=-110;
+                this.y=63+(rndNumbers(0,3)*83);
+                this.speed= rndNumbers(100,(gameLevel+1)*100)/100;
                 break;
             case -1:
-                //this.sprite='images/enemy-bug-l.png'
                 this.x=550;
-                this.y=63+(getSpeed(0,3)*83);  //use getSpeed to set row
-                this.speed= getSpeed(100,(gameLevel+1)*100)/100;
+                this.y=63+(rndNumbers(0,3)*83);
+                this.speed= rndNumbers(100,(gameLevel+1)*100)/100;
                 break;
             default:
                 this.dir=1;
                 this.reset();
-
         }
         this.bounce=false;
     }
@@ -199,49 +162,51 @@ class Bugs extends Entity {
 class Gem extends Bugs {
     constructor(sprite,x,y,speed,dir,leftOffset,rightOffset,bounce) {
         super(sprite,x,y,speed,dir,leftOffset,rightOffset,bounce);
-        this.dir=1;
+        //this.dir=1;
         this.active=false;
         this.leftOffset=-53;
         this.rightOffset=15;
-        //this.bounce=false;
     }
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y+38,65,111);;
     }
     update(dt) {
-        this.x+=(Math.floor(this.speed*(dt*100)))*this.dir;
-
-        if (!(this.bounce)) {
-            if (rock.contact(this,'h')) {
-
-                this.dir=this.dir*-1;
-                this.bounce=true;
-
+        if (this.active) {
+            this.x+=(Math.floor(this.speed*(dt*100)))*this.dir;
+            if (!(this.bounce)) {
+                if (rock.contact(this,'h')) {
+                    this.dir=this.dir*-1;
+                    this.bounce=true;
+                }
+            }
+            if (player.contact(this,'h')) {
+                console.log("gemx: "+gem.x);
+                console.log("gemy: "+gem.y);
+                console.log("playerx: "+player.x);
+                console.log("playery: "+player.y);
+                player.gems+=1;
+                player.livesLeft+=1;
+                this.x=-100;
+                this.active=false;
+            }
+            switch(this.dir) {
+                case 1:
+                    if (this.x > 505) {
+                        this.reset();
+                    }
+                    break;
+                case -1:
+                    if (this.x < -110) {
+                        this.reset();
+                    }
             }
         }
-        if (player.contact(this,'h')) {
-            player.gems+=1;
-            player.livesLeft+=1;
-            this.x=-100;
-            this.active=false;
-
-        }
-        switch(this.dir) {
-            case 1:
-                if (this.x > 505) {
-                    this.reset();
-                }
-                break;
-            case -1:
-                if (this.x < -110) {
-                    this.reset();
-                }
-        }
     }
+
     contact(movingObject,vector) {
         return(super.contact(movingObject,vector));
-
      }
+
      reset() {
         super.reset();
         //this.active=true;
@@ -249,39 +214,27 @@ class Gem extends Bugs {
      }
 }
 
-
-
 class Player extends Entity {
     constructor( sprite,x,y,leftOffset,rightOffset) {
         super(sprite,x,y,leftOffset,rightOffset);
         this.livesLeft=3;
         this.score=0;
-
         this.gems=0;
+        this.totalTurns=0;
     }
 
     render() {
         super.render();
-        //render lives
-        ctx.drawImage(Resources.get(this.sprite), 5, 514,50,85);
         ctx.font="30px Combo";
-        ctx.fillText("x"+this.livesLeft,53,581);
-        //render level
-        ctx.font="30px Combo";
-        ctx.fillText("L:"+gameLevel,133,581);
-        //render gems
+        ctx.drawImage(Resources.get('images/smiley'+gameLevel+'.png'), 28, 543,40,40);
+        ctx.drawImage(Resources.get(this.sprite), 110, 512,50,85);
+        ctx.fillText("x"+this.livesLeft,153,581);
         ctx.drawImage(Resources.get('images/gem1.png'), 218, 533,30,51);
-        ctx.font="30px Combo";
         ctx.fillText("x"+this.gems,253,581);
         //render score
         ctx.drawImage(Resources.get('images/star.png'), 310, 526,40,68);
-
-        ctx.font="30px Combo";
         ctx.fillText("x"+this.score,353,581);
-
         ctx.drawImage(Resources.get('images/burger.png'),450,547, 40, 40);
-
-
     }
 
     survived() {
@@ -295,26 +248,19 @@ class Player extends Entity {
     }
 
     died() {
-              //move player back to starting postion
-        //reset bugs?
-        //update lives / score / etc
-
         this.x=2*101;
         this.y=4*83-10;
-
-            this.livesLeft-=1;
+        this.livesLeft-=1;
+        this.totalTurns+=1;
+        if (this.livesLeft===0) {
+            gameOver();
+        }
         gem.reset();
         resetBugs();
         rock.placement();
-
-        //call method to update lives - should be closed over - maybe it's this method
     }
 
-    update() {
-                console.log("player update still being called");
-     }
-
-     contact(movingObject,vector) {
+    contact(movingObject,vector) {
         return(super.contact(movingObject,vector));
      }
 
@@ -323,7 +269,6 @@ class Player extends Entity {
             case 'left':
                 this.dir=-1;
                 if (!(this.x===0) && !(rock.contact(this,'h'))) {
-
                     if (star.contact(this,'h')) {
                         player.survived();
                     } else {
@@ -335,7 +280,6 @@ class Player extends Entity {
             case 'up':
                 this.dir=-1;
                 if (!(this.y<=0) && !(rock.contact(this,'v'))){
-
                 if (star.contact(this,'v')) {
                         player.survived();
                     } else {
@@ -347,11 +291,9 @@ class Player extends Entity {
             case 'right':
                 this.dir=1;
                 if (!(this.x===404) && !(rock.contact(this,'h'))) {
-
                     if (star.contact(this,'h')) {
                         player.survived();
                     } else {
-                    //console.log()
                     this.x+=101;
                     }
                 }
@@ -369,62 +311,34 @@ class Player extends Entity {
 
 
 
-    function resetBugs() {
-        allEnemies.map(bug => bug.reset());
+function resetBugs() {
+    allEnemies.map(bug => bug.reset());
+}
+
+function initPieces(sprite='images/char1.png') {
+    let bugNum=gameLevel+2;
+    player=new Player(sprite,202,322);
+    //bugs
+    allEnemies=[];
+    for(let i=0; i<bugNum; i++) {
+        let enemyObj=new Bugs('images/enemy-bug.png');
+        allEnemies.push(enemyObj);
+        enemyObj.reset();
     }
+    rock=new Rock();
+    rock.placement();
+    star=new Star();
+    star.placement();
 
-    function initPieces(sprite='images/char1.png') {
-
-        let bugNum=gameLevel+2;
-        player=new Player(sprite,202,322);
-        //bugs
-        allEnemies=[];
-        console.log(bugNum);
-        for(let i=0; i<bugNum; i++) {
-            let enemyObj=new Bugs('images/enemy-bug.png');
-            allEnemies.push(enemyObj);
-            enemyObj.reset();
-        }
-
-        //player
-
-        //other pieces
-        rock=new Rock();  //placement needs to be called before it shows up
-        rock.placement();
-        star=new Star();
-        star.placement();
-        //console.log(star.x+"/"+star.y);
-        gem=new Gem();
-        gem.x=-100;
-        gem.y=0;
-        gem.dir=0;
-    }
-
-
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-//var allEnemies=[];
+    delete gem;
+    gem=new Gem();
+    gem.x=-100;
+    gem.y=0;
+    gem.dir=0;
+}
 
 
 initPieces();
-
-// number of enemies = easy = 3 medium=5 hard=5+faster
-
-// function initBugs(num=3) {
-//     var allEnemies=[];
-
-//     for(let i=0; i<num; i++) {
-//         let enemyObj=new Bugs('images/enemy-bug.png');
-//         allEnemies.push(enemyObj);
-//         enemyObj.reset();
-//     }
-// }
-
-
-
-
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -442,128 +356,101 @@ document.addEventListener('keyup', function(e) {
 
 document.addEventListener('click', function(e) {
     if (e.clientX>440 && e.clientY>540) {
-        console.log('right place');
         gameOptions();
     }
 
     }
 );
 
-
-function getSpeed(min,max) {
+function rndNumbers(min,max) {
     return Math.floor(Math.random()*(max-min)) + min;
 }
 
-function gameReset() {
-    //clear / reinitialize all entities
-    //
-}
-
 function gameOptions() {
-
-
     let modal=document.getElementById('optionsModal');
     let okButton=document.querySelectorAll('#optionsModal #ok')[0];
-    // let yesButton=document.querySelectorAll('#resetModal #reset-yes')[0];
-
     modal.style.display="block";
 
-    //let radios=document.getElementsByName('level');
-
-    // radios.map(button => function(button) {
-    //     if (button.value===this.level) {
-    //         button.checked=true;
-    //     }
-    // });
     checkRadios('level',gameLevel);
     checkRadios('charlist',player.sprite);
-
 
     function checkRadios(rbName,rbCurrent) {
         let radios=document.getElementsByName(rbName);
         for (let i=0,length=radios.length;  i<length; i++) {
-            console.log(rbCurrent+" - "+radios[i].value);
             if (radios[i].value==rbCurrent) {
-                console.log(radios[i].checked);
                 radios[i].checked=true;
-                console.log(radios[i].checked);
             } else {
                 radios[i].checked=false;
             }
         }
     }
 
-
     okButton.onclick=function() {
         modal.style.display="none";
-        //activate whatever the game start function is
-        //initPieces();
-
-        //need to set level and char
-
         gameLevel=parseInt(getRadios('level'));
-        // player.sprite=getRadios('charlist');
         initPieces(getRadios('charlist'));
-
-        // let radios=document.getElementsByName('charlist');
-        //     for (let i=0,length=radios.length;  i<length; i++) {
-
-        //         if (radios[i].checked===true) {
-
-        //             player.sprite=radios[i].value;
-
-        //         }
-        //     }
-
 
         function getRadios(rbName) {
             let radios=document.getElementsByName(rbName);
             for (let i=0,length=radios.length;  i<length; i++) {
-                //console.log(rbCurrent+" - "+radios[i].value);
-                //console.log(radios[i].checked);
                 if (radios[i].checked===true) {
-                    //console.log(radios[i].value);
-                    //console.log(radios[i].checked);
                     return(radios[i].value);
-                    //onsole.log(player.sprite);
                 }
             }
         }
-
     }
 
     window.onclick=function(event) {
         if (event.target===modal) {
             modal.style.display="none";
-            //start game
-            //initPieces();
-            //need to set level and char
             }
         }
-
 }
 
-
 function startGame() {
-    //open the modal prior to first game play
-
-        //catch esc key to close modal
-    //document.addEventListener('keydown', escClose);
-
     let modal=document.getElementById('startModal');
     let startGameButton=document.querySelectorAll('#startModal #start')[0];
-    // let yesButton=document.querySelectorAll('#resetModal #reset-yes')[0];
-
     modal.style.display="block";
-
-
-
 
     startGameButton.onclick=function() {
         modal.style.display="none";
-        //activate whatever the game start function is
         initPieces();
+    }
 
+    window.onclick=function(event) {
+        if (event.target===modal) {
+            modal.style.display="none";
+            initPieces();
+            }
+        }
+}
+
+function gameOver() {
+    let modal=document.getElementById('overModal');
+    let gameOverButton=document.querySelectorAll('#overModal #again')[0];
+
+    modal.style.display="block";
+
+    let msgStart = ['Awesome Game!','Cool Moves!','Great Job!','Well Done!'];
+    //let modalMsg=msgStart[rndNumbers(0,msgStart.length)]+"  But, you've run out of turns.";
+    document.getElementById('over_msg').innerHTML=msgStart[rndNumbers(0,msgStart.length)]+"  But, you've run out of turns.";
+
+
+    document.getElementById('star_count').innerHTML=player.score+" stars collected.";
+
+
+    document.getElementById('gem_count').innerHTML=player.gems+" gems collected.";
+
+    document.getElementById('turns_sprite').src=player.sprite;
+
+
+    document.getElementById('turns_count').innerHTML=player.totalTurns+" total turns played.";
+
+
+
+    gameOverButton.onclick=function() {
+        modal.style.display="none";
+        initPieces();
     }
 
     window.onclick=function(event) {
@@ -573,13 +460,6 @@ function startGame() {
             initPieces();
             }
         }
-
-
-
 }
-
-
-
-
 
 document.body.onload=startGame();

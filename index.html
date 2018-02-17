@@ -72,7 +72,7 @@
         <div class="modal__row">
             <div class="sm__graphic_box">
                 <!-- 20% gem graphic/icon here -->
-                <img src="images/gem2.png" width="30px" height="51px">
+                <img src="images/gem1.png" width="30px" height="51px">
             </div>
             <div class="sm__text_box">
                 <!-- 80% gem descriptive text goes here -->
@@ -145,19 +145,19 @@
             <div class="op__level_box" ></div>
             <div class="op__level_box">
                 <label>
-                    <img src="images/smiley_easy.png" width="59" height="58">
+                    <img src="images/smiley1.png" width="59" height="58">
                     <input type="radio" name="level" value="1"/>
                 </label>
             </div>
              <div class="op__level_box">
                 <label>
-                    <img src="images/smiley_medium.png" width="59" height="58">
+                    <img src="images/smiley2.png" width="59" height="58">
                     <input type="radio" name="level" value="2"/>
                 </label>
             </div>
             <div class="op__level_box">
                 <label>
-                    <img src="images/smiley_hard.png" width="59" height="58">
+                    <img src="images/smiley3.png" width="59" height="58">
                     <input type="radio" name="level" value="3"/>
                 </label>
             </div>
@@ -178,7 +178,64 @@
 
 
 <!-- game over modal with reset -->
+<div class="over__modal" id="overModal">
+    <div class="modal__content">  <!-- this is the container element -->
+        <!-- <div class="modal__row ov__header">Game Over</div> -->
 
+        <div class="modal__row">
+            <h1 id="over_msg"></h1>
+        </div>
+
+        <div class="modal__row">
+            <h2>Here are your game totals:</h2>
+        </div>
+
+
+        <div class="modal__row">
+            <div class="ov__graphic_box"></div>
+                <div class="ov__graphic_box">
+                    <img src="images/star.png" width="40px" height="68px">
+                </div>
+                <div class="ov__text_box">
+                    <!-- <img src="images/star.png" width="40px" height="68px"> -->
+                    <span id="star_count"></span>
+                </div>
+
+        </div>
+
+        <div class="modal__row">
+            <div class="ov__graphic_box"></div>
+            <div class="ov__graphic_box">
+                <img src="images/gem1.png" width="30px" height="51px">
+            </div>
+            <div class="ov__text_box">
+                <!-- <img src="images/gem1.png" width="30px" height="51px"> -->
+                <span id="gem_count"></span>
+            </div>
+        </div>
+
+        <div class="modal__row">
+            <div class="ov__graphic_box"></div>
+            <div class="sm__graphic_box">
+                <img  id="turns_sprite" style="width: 50px" style=" height: 85px"/>
+
+            </div>
+            <div class="ov__text_box">
+                <!-- <img  id="turns_sprite" style="width: 50px" style="" height: 85px"/> -->
+                <span id="turns_count"></span>
+            </div>
+        </div>
+
+        <div class="modal__row">
+            <div class="modal__btns--align">
+                <button class="modal__btns" id="again">
+                    Play Again
+                </button>
+            </div>
+        </div>
+
+    </div>  <!-- end container -->
+</div>  <!-- end game over modal -->
 
 
     <script src="js/resources.js"></script>

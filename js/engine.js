@@ -99,9 +99,9 @@ var Engine = (function(global) {
             //enemy.checkPlayerContact(); ---no
             //enemy.collision();
             //console.log(player.contact(enemy));
-            let answer=player.contact(enemy,'h');
-            //console.log(answer+" from engine.js");
-            (answer) ? player.died() : false;
+            // let answer=player.contact(enemy,'h');
+            // //console.log(answer+" from engine.js");
+            // (answer) ? player.died() : false;
 
         });
         //player.update();
@@ -203,7 +203,10 @@ var Engine = (function(global) {
         'images/enemy-bug-l.png',
         'images/rock.png',
         'images/star.png',
-        'images/burger.png'
+        'images/burger.png',
+        'images/smiley1.png',
+        'images/smiley2.png',
+        'images/smiley3.png'
     ]);
     Resources.onReady(init);
 
