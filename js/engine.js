@@ -204,9 +204,9 @@ var Engine = (function(global) {
         'images/rock.png',
         'images/star.png',
         'images/burger.png',
-        'images/smiley1.png',
-        'images/smiley2.png',
-        'images/smiley3.png'
+        'images/smiley1sm.png',
+        'images/smiley2sm.png',
+        'images/smiley3sm.png'
     ]);
     Resources.onReady(init);
 

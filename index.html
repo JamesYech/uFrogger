@@ -2,247 +2,210 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Effective JavaScript: Frogger</title>
+    <title>uDacity Frogger Project</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Combo" rel="stylesheet">
 </head>
 <body>
 
-<!-- start game modal with instructions -->
-
-
-<div class="start__modal" id="startModal">
-    <div class="modal__content">  <!-- this is the container element -->
-        <div class="modal__row sm__header"> </div>
-        <div class="modal__row">
-            <div class="sm__graphic_box">
-                <!-- 20% arrow graphic/icon here -->
-                <div class="modal__row">
-                    <div class="sm__keys_box">
-                        <span></span>
+    <!-- start game modal with instructions -->
+    <div class="start__modal" id="startModal">
+        <div class="modal__content">
+            <div class="modal__row sm__header">The uDacity Frogger Game</div>
+            <div class="modal__row">
+                <div class="sm__graphic_box">
+                    <div class="modal__row">
+                        <div class="sm__keys_box">
+                            <span></span>
+                        </div>
+                        <div class="sm__keys_box">
+                            <span class="glyphicon glyphicon-chevron-up"></span>
+                        </div>
+                        <div class="sm__keys_box">
+                            <span></span>
+                        </div>
                     </div>
-                    <div class="sm__keys_box">
-                        <span class="glyphicon glyphicon-chevron-up"></span>
+                    <div class="modal__row">
+                        <div class="sm__keys_box">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                        </div>
+                        <div class="sm__keys_box">
+                            <span></span>
+                        </div>
+                        <div class="sm__keys_box">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </div>
                     </div>
-                    <div class="sm__keys_box">
-                        <span></span>
+                    <div class="modal__row">
+                        <div class="sm__keys_box">
+                            <span></span>
+                        </div>
+                        <div class="sm__keys_box">
+                            <span class="glyphicon glyphicon-chevron-down"></span>
+                        </div>
+                        <div class="sm__keys_box">
+                            <span></span>
+                        </div>
                     </div>
-
+               </div>
+                <div class="sm__text_box">
+                    <p>Use the arrow keys to cross the path to the water and collect the stars without getting hit by a bug or you lose a turn.</p>
                 </div>
-                <div class="modal__row">
-                    <div class="sm__keys_box">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
-                    </div>
-                    <div class="sm__keys_box">
-                        <span></span>
-                    </div>
-                    <div class="sm__keys_box">
-                        <span class="glyphicon glyphicon-chevron-right"></span>
-                    </div>
-                </div>
-                <div class="modal__row">
-                    <div class="sm__keys_box">
-                        <span></span>
-                    </div>
-                    <div class="sm__keys_box">
-                        <span class="glyphicon glyphicon-chevron-down"></span>
-                    </div>
-                    <div class="sm__keys_box">
-                        <span></span>
-                    </div>
-                </div>
-
-           </div>
-            <div class="sm__text_box">
-                <!-- 80% arrow keys descriptive text goes here -->
-                <p>Use the arrow keys to cross the path to the water and collect the stars without getting hit by a bug or you lose a turn.</p>
             </div>
-        </div>
-        <div class="modal__row">
-            <div class="sm__graphic_box">
-                <!-- 20% star graphic/icon here -->
-                <img src="images/star.png" width="40px" height="68px">
-            </div>
-            <div class="sm__text_box">
-                <!-- 80% stars descriptive text goes here -->
-                <p>You gain a point for every star you collect.  How many can you collect before the game is over?</p>
-
-            </div>
-        </div>
-        <div class="modal__row">
-            <div class="sm__graphic_box">
-                <!-- 20% gem graphic/icon here -->
-                <img src="images/gem1.png" width="30px" height="51px">
-            </div>
-            <div class="sm__text_box">
-                <!-- 80% gem descriptive text goes here -->
-                <p>Gems will travel across the path just like bugs but if you can catch them, you get extra turns.</p>
-            </div>
-        </div>
-        <div class="modal__row">
-            <div class="sm__graphic_box">
-                <span class="glyphicon glyphicon-menu-hamburger"></span>
-                <!-- 20% burger graphic/icon here -->
-            </div>
-            <div class="sm__text_box">
-                <!-- 80% burger descriptive text goes here -->
-                <p>Click on the hamburger icon to change your character or your level and to reset the game.</p>
-            </div>
-        </div>
-        <div class="modal__row">
-            <div class="modal__btns--align">
-                <button class="modal__btns" id="start">
-                    Start Game
-                </button>
-            </div>
-        </div>
-
-    </div>  <!-- modal content div -->
-</div>   <!-- start modal -->
-
-<!-- options modal for player and level mod -->
-
-<div class="options__modal" id="optionsModal">
-    <div class="modal__content">  <!-- this is the container element -->
-        <div class="modal__row op__header">Game Options</div>
-        <div class="modal__row">Choose your character</div>
-        <div class="modal__row">
-            <div class="op__char_box"></div>
-            <div class="op__char_box">
-                <label>
-                    <img src="images/char1.png" class="modal__char">
-                    <input type="radio" name="charlist" value="images/char1.png" class="char_radio"/>
-                </label>
-            </div>
-            <div class="op__char_box">
-                <label>
-                    <img src="images/char2.png" class="modal__char">
-                    <input type="radio" name="charlist" value="images/char2.png"/>
-                </label>
-            </div>
-            <div class="op__char_box">
-                <label>
-                    <img src="images/char3.png" class="modal__char">
-                    <input type="radio" name="charlist" value="images/char3.png"/>
-                </label>
-            </div>
-            <div class="op__char_box">
-                <label>
-                    <img src="images/char4.png" class="modal__char">
-                    <input type="radio" name="charlist" value="images/char4.png"/>
-                </label>
-            </div>
-            <div class="op__char_box">
-                <label>
-                    <img src="images/char5.png" class="modal__char">
-                    <input type="radio" name="charlist" value="images/char5.png"/>
-                </label>
-            </div>
-            <div class="op__char_box"></div>
-        </div>   <!-- end of char row -->
-        <div class="modal__row">Choose your level</div>
-        <div class="modal__row">
-            <div class="op__level_box" ></div>
-            <div class="op__level_box">
-                <label>
-                    <img src="images/smiley1.png" width="59" height="58">
-                    <input type="radio" name="level" value="1"/>
-                </label>
-            </div>
-             <div class="op__level_box">
-                <label>
-                    <img src="images/smiley2.png" width="59" height="58">
-                    <input type="radio" name="level" value="2"/>
-                </label>
-            </div>
-            <div class="op__level_box">
-                <label>
-                    <img src="images/smiley3.png" width="59" height="58">
-                    <input type="radio" name="level" value="3"/>
-                </label>
-            </div>
-            <div class="op__level_box" ></div>
-        </div>  <!-- end of level row -->
-
-        <div class="modal__row">
-            <div class="modal__btns--align">
-                <button class="modal__btns" id="ok">
-                    OK
-                </button>
-            </div>
-        </div>
-
-
-    </div>  <!-- modal content div -->
-</div>   <!-- options modal -->
-
-
-<!-- game over modal with reset -->
-<div class="over__modal" id="overModal">
-    <div class="modal__content">  <!-- this is the container element -->
-        <!-- <div class="modal__row ov__header">Game Over</div> -->
-
-        <div class="modal__row">
-            <h1 id="over_msg"></h1>
-        </div>
-
-        <div class="modal__row">
-            <h2>Here are your game totals:</h2>
-        </div>
-
-
-        <div class="modal__row">
-            <div class="ov__graphic_box"></div>
-                <div class="ov__graphic_box">
+            <div class="modal__row">
+                <div class="sm__graphic_box">
                     <img src="images/star.png" width="40px" height="68px">
                 </div>
+                <div class="sm__text_box">
+                    <p>You gain a point for every star you collect.  How many can you collect before the game is over?</p>
+                </div>
+            </div>
+            <div class="modal__row">
+                <div class="sm__graphic_box">
+                    <img src="images/gem1.png" width="30px" height="51px">
+                </div>
+                <div class="sm__text_box">
+                    <p>Gems will travel across the path just like bugs but if you can catch them, you get extra turns.</p>
+                </div>
+            </div>
+            <div class="modal__row">
+                <div class="sm__graphic_box">
+                    <span class="glyphicon glyphicon-menu-hamburger"></span>
+                </div>
+                <div class="sm__text_box">
+                    <p>Click on the hamburger icon to change your character or your level and to reset the game.</p>
+                </div>
+            </div>
+            <div class="modal__row">
+                <div class="modal__btns--align">
+                    <button class="modal__btns" id="start">
+                        Start Game
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>   <!-- start modal -->
+
+    <!-- options modal for player and level mod -->
+    <div class="options__modal" id="optionsModal">
+        <div class="modal__content">
+            <div class="modal__row op__header">Game Options</div>
+            <div class="modal__row op__choices">Avatars</div>
+            <div class="modal__row">
+                <div class="op__char_box"></div>
+                <div class="op__char_box">
+                    <label>
+                        <img src="images/char1sm.png" class="modal__char"><br/>
+                        <input type="radio" name="charlist" value="images/char1.png" class="char_radio"/>
+                    </label>
+                </div>
+                <div class="op__char_box">
+                    <label>
+                        <img src="images/char2sm.png" class="modal__char"><br/>
+                        <input type="radio" name="charlist" value="images/char2.png"/>
+                    </label>
+                </div>
+                <div class="op__char_box">
+                    <label>
+                        <img src="images/char3sm.png" class="modal__char"><br/>
+                        <input type="radio" name="charlist" value="images/char3.png"/>
+                    </label>
+                </div>
+                <div class="op__char_box">
+                    <label>
+                        <img src="images/char4sm.png" class="modal__char"><br/>
+                        <input type="radio" name="charlist" value="images/char4.png"/>
+                    </label>
+                </div>
+                <div class="op__char_box">
+                    <label>
+                        <img src="images/char5sm.png" class="modal__char"><br/>
+                        <input type="radio" name="charlist" value="images/char5.png"/>
+                    </label>
+                </div>
+                <div class="op__char_box"></div>
+            </div>   <!-- end of char row -->
+            <div class="modal__row op__choices">Levels</div>
+            <div class="modal__row">
+                <div class="op__level_box" ></div>
+                <div class="op__level_box">
+                    <label>
+                        <img src="images/smiley1sm.png" width="59" height="58"><br/>
+                        <input type="radio" name="level" value="1"/>
+                    </label>
+                </div>
+                 <div class="op__level_box">
+                    <label>
+                        <img src="images/smiley2sm.png" width="59" height="58"><br/>
+                        <input type="radio" name="level" value="2"/>
+                    </label>
+                </div>
+                <div class="op__level_box">
+                    <label>
+                        <img src="images/smiley3sm.png" width="59" height="58"><br/>
+                        <input type="radio" name="level" value="3"/>
+                    </label>
+                </div>
+                <div class="op__level_box" ></div>
+            </div>
+            <div class="modal__row ">
+                <div class="modal__btns--align op__btn--padding">
+                    <button class="modal__btns" id="ok">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>   <!-- end options modal -->
+
+    <!-- game over modal with reset -->
+    <div class="over__modal" id="overModal">
+        <div class="modal__content">
+            <div class="modal__row ov__header">
+                Game Over
+            </div>
+            <div class="modal__row ov__stats ov__row--padding">
+                <span id="over_msg"></span>
+            </div>
+            <div class="modal__row">
+                <div class="ov__graphic_box"></div>
+                <div class="ov__graphic_box">
+                    <img src="images/starsm.png">
+                </div>
                 <div class="ov__text_box">
-                    <!-- <img src="images/star.png" width="40px" height="68px"> -->
                     <span id="star_count"></span>
                 </div>
-
-        </div>
-
-        <div class="modal__row">
-            <div class="ov__graphic_box"></div>
-            <div class="ov__graphic_box">
-                <img src="images/gem1.png" width="30px" height="51px">
             </div>
-            <div class="ov__text_box">
-                <!-- <img src="images/gem1.png" width="30px" height="51px"> -->
-                <span id="gem_count"></span>
+            <div class="modal__row">
+                <div class="ov__graphic_box"></div>
+                <div class="ov__graphic_box">
+                    <img src="images/gem1sm.png">
+                </div>
+                <div class="ov__text_box">
+                    <span id="gem_count"></span>
+                </div>
             </div>
-        </div>
-
-        <div class="modal__row">
-            <div class="ov__graphic_box"></div>
-            <div class="sm__graphic_box">
-                <img  id="turns_sprite" style="width: 50px" style=" height: 85px"/>
-
+            <div class="modal__row">
+                <div class="ov__graphic_box"></div>
+                <div class="sm__graphic_box">
+                    <img  id="turns_sprite"/>
+                </div>
+                <div class="ov__text_box ov__row--padding">
+                    <span id="turns_count"></span>
+                </div>
             </div>
-            <div class="ov__text_box">
-                <!-- <img  id="turns_sprite" style="width: 50px" style="" height: 85px"/> -->
-                <span id="turns_count"></span>
-            </div>
-        </div>
-
-        <div class="modal__row">
-            <div class="modal__btns--align">
-                <button class="modal__btns" id="again">
-                    Play Again
-                </button>
+            <div class="modal__row">
+                <div class="modal__btns--align">
+                    <button class="modal__btns" id="again">
+                        Play Again
+                    </button>
+                </div>
             </div>
         </div>
-
-    </div>  <!-- end container -->
-</div>  <!-- end game over modal -->
-
+    </div>  <!-- end game over modal -->
 
     <script src="js/resources.js"></script>
-
     <script src="js/engine.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
-
-<!-- glyphicon-menu-left, -right, -down, -up -->

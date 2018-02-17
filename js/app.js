@@ -226,7 +226,7 @@ class Player extends Entity {
     render() {
         super.render();
         ctx.font="30px Combo";
-        ctx.drawImage(Resources.get('images/smiley'+gameLevel+'.png'), 28, 543,40,40);
+        ctx.drawImage(Resources.get('images/smiley'+gameLevel+'sm.png'), 28, 543);
         ctx.drawImage(Resources.get(this.sprite), 110, 512,50,85);
         ctx.fillText("x"+this.livesLeft,153,581);
         ctx.drawImage(Resources.get('images/gem1.png'), 218, 533,30,51);
@@ -431,9 +431,17 @@ function gameOver() {
 
     modal.style.display="block";
 
+    for(let i=1; i<5; i++){
+        if (player.sprite==='images/char'+i+'.png') {
+            document.getElementById('turns_sprite').src='images/char'+i+'sm.png';
+            break;
+        }
+    }
+
+
     let msgStart = ['Awesome Game!','Cool Moves!','Great Job!','Well Done!'];
     //let modalMsg=msgStart[rndNumbers(0,msgStart.length)]+"  But, you've run out of turns.";
-    document.getElementById('over_msg').innerHTML=msgStart[rndNumbers(0,msgStart.length)]+"  But, you've run out of turns.";
+    document.getElementById('over_msg').innerHTML=msgStart[rndNumbers(0,msgStart.length)]+"<br/>But, you've run out of turns.";
 
 
     document.getElementById('star_count').innerHTML=player.score+" stars collected.";
@@ -441,7 +449,7 @@ function gameOver() {
 
     document.getElementById('gem_count').innerHTML=player.gems+" gems collected.";
 
-    document.getElementById('turns_sprite').src=player.sprite;
+
 
 
     document.getElementById('turns_count').innerHTML=player.totalTurns+" total turns played.";

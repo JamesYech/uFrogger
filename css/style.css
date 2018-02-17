@@ -3,6 +3,7 @@
 body {
     text-align: center;
     margin: 0;
+    box-sizing: border-box;
 }
 
 
@@ -41,17 +42,18 @@ body {
             -ms-transform: translateY(-50%);
              -o-transform: translateY(-50%);
                 transform: translateY(-50%);
-        background-color: yellow;
-        color: var(--color-text);
+        background-color: #d5cabe;
+        /*color: var(--color-text);*/
         /*width: 50%;*/
         display: inline-grid;
-        width: 505px;
+        width: 450px;
+        /*padding: 5px;*/
         /*height: 606px;*/
     }
 
     .modal__char {
-        width: 50px;
-        height: 85px;
+       /* width: 50px;
+        height: 85px;*/
 
     }
 
@@ -69,13 +71,13 @@ body {
            transition-duration: 0.2s;
         -webkit-transition-duration: 0.2s;
         -moz-transition-duration: 0.2s;
-        background-color: blue;
+        background-color: #5fc148;
         padding: 4px 30px;
     }
 
     .modal__btns:hover {
         color: var(--color-three);
-        background-color: green;
+        background-color: #f1c138;
         border: 0;
         -o-transition-duration: 0.2s;
            transition-duration: 0.2s;
@@ -92,7 +94,8 @@ body {
         height: 3em;
         width: 100%;
         text-align: center;
-        padding-bottom: 20px;
+        /*padding-bottom: 20px;*/
+        /*margin: auto;*/
     }
 
 
@@ -115,6 +118,8 @@ body {
         background-color: rgba(0,0,0,0.4);
     }
 
+
+
       .ov__graphic_box {
         width: 20%;
         min-width: 85px;
@@ -122,9 +127,9 @@ body {
     }
 
     .ov__text_box {
-        width: 80%;
+        width: 50%;
         text-align: left;
-        display: flex;
+        /*display: flex;*/
 
     }
 
@@ -135,8 +140,23 @@ body {
 
 
 
+    .ov__header {
+        background-color: #5fc148;
+        padding: 10px 0;
+        border-radius: 5px 5px 0 0;
+        font-size: 2em;
+    }
+
+     .ov__row--padding {
+       padding-bottom: 10px;
+    }
 
 
+  .ov__stats {
+        font-size: 1.5em;
+        /*font-weight: bold;*/
+        padding-top: 5px;
+    }
 
 
    .over__header {
@@ -184,6 +204,12 @@ body {
         padding-top: 10%;
       }
 
+    .sm__header {
+        background-color: #5fc148;
+        padding: 10px 0;
+        border-radius: 5px 5px 0 0;
+        font-size: 1.5em;
+    }
 
      .sm__graphic_box {
         width: 20%;
@@ -238,7 +264,9 @@ body {
         background-color: rgba(0,0,0,0.4);
     }
 
-
+    .op__btn--padding {
+       padding-top: 10px;
+    }
 
     .op__text_box {
         width: 80%;
@@ -252,6 +280,7 @@ body {
 
     .op__char_box {
         width: 14%;
+        display: inline-flex;
         /*min-width: 73px;*/
     }
 
@@ -260,12 +289,23 @@ body {
         /*min-width: 73px;*/
     }
 
+    .op__choices {
+        font-size: 1.5em;
+        /*font-weight: bold;*/
+        padding-top: 5px;
+    }
+
     .char_radio:before {
         margin-top: -4px;
     }
 
 
-
+     .op__header {
+        background-color: #5fc148;
+        padding: 10px 0;
+        border-radius: 5px 5px 0 0;
+        font-size: 2em;
+    }
 
 
 
