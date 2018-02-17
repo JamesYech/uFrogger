@@ -63,10 +63,9 @@ var Engine = (function(global) {
 
     /* This function does some initial setup that should only occur once,
      * particularly setting the lastTime variable that is required for the
-     * game loop.
+     * game loop.  reset() would be called from here if needed.
      */
     function init() {
-        reset();
         lastTime = Date.now();
         main();
     }
@@ -82,8 +81,6 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-
-        // checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -96,17 +93,8 @@ var Engine = (function(global) {
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
-            //enemy.checkPlayerContact(); ---no
-            //enemy.collision();
-            //console.log(player.contact(enemy));
-            // let answer=player.contact(enemy,'h');
-            // //console.log(answer+" from engine.js");
-            // (answer) ? player.died() : false;
-
         });
-        //player.update();
         gem.update(dt);
-
     }
 
     /* This function initially draws the "game level", it will then call
@@ -150,7 +138,6 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-
         renderEntities();
     }
 
@@ -165,22 +152,10 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
-
         player.render();
-        //lives.render();
-        //render score panel?
         rock.render();
         star.render();
         (gem.active) ? gem.render() : false ;
-    }
-
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
-     */
-    function reset() {
-
-        // noop
     }
 
     /* Go ahead and load all of the images we know we're going to need to
