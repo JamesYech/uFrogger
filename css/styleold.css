@@ -25,8 +25,7 @@ body {
         position: relative;
         top: 50%;
         border-radius: 5px;
-        -webkit-transform: translateY(-50%);
-                transform: translateY(-50%);
+        transform: translateY(-50%);
         background-color: #d5cabe;
         display: inline-grid;
         width: 450px;
@@ -34,13 +33,10 @@ body {
 
     .modal__row {
         width: 100%;
-        display: -webkit-box;
         display: flex;
         flex-wrap: nowrap;
-        -webkit-box-pack: center;
-                justify-content: center;
-        -webkit-box-align: center;
-                align-items: center;
+        justify-content: center;
+        align-items: center;
     }
 
 
@@ -87,14 +83,6 @@ body {
         width:33%;
     }
 
-    .sg__keys--align-rt {
-        text-align: right;
-    }
-
-    .sg__keys--align-lt {
-        text-align: left;
-    }
-
     .sg__keys_box:before {
         content: "";
         display: block;
@@ -132,7 +120,6 @@ body {
 
     .op__char_box {
         width: 14%;
-        display: -webkit-inline-box;
         display: inline-flex;
     }
 
@@ -203,4 +190,3 @@ body {
     .glyphicon-chevron-right:before {content: "\e080";}
     .glyphicon-chevron-up:before {content: "\e113";}
     .glyphicon-chevron-down:before {content: "\e114";}
-/*# sourceMappingURL=style.css.map */
