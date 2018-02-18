@@ -6,6 +6,11 @@
 This is the Frogger arcade game project from the Udacity Front-End Developers Nanodegree program.  It's purpose is to demonstrate understanding of object oriented coding in javascript.
 
 
+** How to Load the Game **
+
+This game is web based.  You can clone the the respository (https://github.com/JamesYech/uFrogger.git) to your computer and launch the index.html file.  Or, navigate to http://www.jdtech.net/frogger .
+
+
 ** How to Play **
 
 Using the arrow keys on the keyboard, move your player across the path to the water and collect the star.  Avoid contact with the bugs, if you don't, you'll lose a turn.

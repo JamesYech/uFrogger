@@ -3,7 +3,7 @@ var gameLevel=1;
 
 //game entities are built from this
 class Entity {
-    constructor(sprite="",x=0,y=0,speed=0,dir=1,sector=0) {
+    constructor(x=0,y=0,speed=0,sector=0,sprite="",dir=1) {
         this.sprite=sprite;
         this.x=x;
         this.y=y;
@@ -24,8 +24,7 @@ class Entity {
 
     //check for contact with other objects
     contact(movingObject,vector) {
-        let offset;
-        (movingObject.dir>0) ? offset=movingObject.leftOffset : offset=movingObject.rightOffset;
+        let offset = (movingObject.dir>0) ? movingObject.leftOffset : movingObject.rightOffset;
         switch(vector) {
             case 'h':  //left or right
                 if (Math.abs(movingObject.y-this.y)<=17) {  //in same row (y's align)
@@ -48,8 +47,8 @@ class Entity {
 }
 
 class Rock extends Entity {
-    constructor(sprite='images/rock.png',x,y,leftOffset,rightOffset) {
-        super(sprite,x,y,leftOffset,rightOffset);
+    constructor(x,y,leftOffset,rightOffset,sprite='images/rock.png') {
+        super(x,y,leftOffset,rightOffset,sprite);
     }
 
     render() {
@@ -61,14 +60,14 @@ class Rock extends Entity {
     }
 
     placement() {
-        this.y=rndNumbers(1,4)*83-19  //random row 2-4
-        this.x=rndNumbers(1,4)*101    //random col 2-4
+        this.y=rndNumbers(1,4)*83-19;  //random row 2-4
+        this.x=rndNumbers(1,4)*101;    //random col 2-4
     }
 }
 
 class Star extends Entity {
-    constructor(sprite='images/star.png',x,y,leftOffset,rightOffset) {
-        super(sprite,x,y,leftOffset,rightOffset);
+    constructor(x,y,leftOffset,rightOffset,sprite='images/star.png') {
+        super(x,y,leftOffset,rightOffset,sprite);
     }
 
     render() {
@@ -81,13 +80,13 @@ class Star extends Entity {
 
     placement() {
         this.y=0-10;  // -10 aligns star in the grid
-        this.x=rndNumbers(0,5)*101    //random col 1-5
+        this.x=rndNumbers(0,5)*101;    //random col 1-5
     }
 }
 
 class Bugs extends Entity {
-    constructor( sprite='images/enemy-bug.png',x,y,speed,dir,leftOffset,rightOffset,bounce) {
-        super(sprite,x,y,speed,dir,leftOffset,rightOffset,bounce);
+    constructor(x,y,speed,leftOffset,rightOffset,bounce,sprite='images/enemy-bug.png',dir) {
+        super(x,y,speed,leftOffset,rightOffset,bounce,sprite,dir);
         this.leftOffset=-15;
         this.rightOffset=15;
     }
@@ -111,7 +110,9 @@ class Bugs extends Entity {
             }
         }
         //check for contact with player
-        (player.contact(this,'h')) ? player.died() : false;
+        if (player.contact(this,'h')) {
+            player.died();
+        }
 
         switch(this.dir) {
             case 1:
@@ -162,8 +163,8 @@ class Bugs extends Entity {
 }
 
 class Gem extends Bugs {
-    constructor(sprite,x,y,speed,dir,leftOffset,rightOffset,bounce) {
-        super(sprite,x,y,speed,dir,leftOffset,rightOffset,bounce);
+    constructor(x,y,speed,leftOffset,rightOffset,bounce,sprite,dir) {
+        super(x,y,speed,leftOffset,rightOffset,bounce,sprite,dir);
         this.active=false;
         this.leftOffset=-53;
         this.rightOffset=15;
@@ -173,7 +174,7 @@ class Gem extends Bugs {
     }
 
     render() {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y+38,65,111);;
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y+38,65,111);
     }
 
     contact(movingObject,vector) {
@@ -215,8 +216,8 @@ class Gem extends Bugs {
 }
 
 class Player extends Entity {
-    constructor( sprite,x,y,leftOffset,rightOffset) {
-        super(sprite,x,y,leftOffset,rightOffset);
+    constructor(x,y,leftOffset,rightOffset,sprite) {
+        super(x,y,leftOffset,rightOffset,sprite);
         this.livesLeft=3;
         this.score=0;
         this.gems=0;
@@ -276,7 +277,8 @@ class Player extends Entity {
             case 'left':
                 this.dir=-1;
                 //can't move left if left-most col or if rock in the way
-                if (!(this.x===0) && !(rock.contact(this,'h'))) {
+
+                if (this.x!==0 && !(rock.contact(this,'h'))) {
                     if (star.contact(this,'h')) {
                         player.survived();
                     } else {
@@ -288,8 +290,8 @@ class Player extends Entity {
             case 'up':
                 this.dir=-1;
                 //can't move up if in top row or rock in the way
-                if (!(this.y<=0) && !(rock.contact(this,'v'))){
-                if (star.contact(this,'v')) {
+                if (this.y>0 && !(rock.contact(this,'v'))){
+                    if (star.contact(this,'v')) {
                         player.survived();
                     } else {
                     this.y-=83;
@@ -300,7 +302,7 @@ class Player extends Entity {
             case 'right':
                 this.dir=1;
                 //can't move right if in right-most col or if rock in the way
-                if (!(this.x===404) && !(rock.contact(this,'h'))) {
+                if (this.x!==404 && !(rock.contact(this,'h'))) {
                     if (star.contact(this,'h')) {
                         player.survived();
                     } else {
@@ -312,7 +314,7 @@ class Player extends Entity {
             case 'down':
             this.dir=1;
             //can't move down if in bottom row or rock in the way
-            if (!(this.y>3*83) && !(rock.contact(this,'v'))) {
+            if (this.y<=3*83 && !(rock.contact(this,'v'))) {
                 this.y+=83;
             }
         }
@@ -331,7 +333,7 @@ function initPieces(sprite='images/char1.png') {
         newBug.reset();
     }
 
-    player=new Player(sprite,202,322);
+    player=new Player(202,322,0,0,sprite);
     rock=new Rock();
     rock.placement();
     star=new Star();
@@ -372,14 +374,14 @@ function startGame() {
     startGameButton.onclick=function() {
         modal.style.display="none";
         initPieces();
-    }
+    };
 
     window.onclick=function(event) {
         if (event.target===modal) {
             modal.style.display="none";
             initPieces();
             }
-        }
+        };
 }
 
 //this interacts with the Game Options modal
@@ -393,7 +395,7 @@ function gameOptions() {
     function setRadios(rbName,rbCurrent) {
         let radios=document.getElementsByName(rbName);
         for (let i=0,length=radios.length; i<length; i++) {
-            (radios[i].value==rbCurrent) ? radios[i].checked=true : radios[i].checked=false;
+            radios[i].checked = (radios[i].value==rbCurrent) ? true : false;
         }
     }
 
@@ -412,14 +414,14 @@ function gameOptions() {
                 }
             }
         }
-    }
+    };
 
     //cancel any changes
     window.onclick=function(event) {
         if (event.target===modal) {
             modal.style.display="none";
         }
-    }
+    };
 }
 
 function gameOver() {
@@ -435,12 +437,10 @@ function gameOver() {
     }
 
     let msgStart = ['Awesome Game!','Cool Moves!','Great Job!','Well Done!'];
-    let statMsg;
     document.getElementById('over_msg').innerHTML=msgStart[rndNumbers(0,msgStart.length)]+"<br/>But, you've run out of turns.";
-
-    (player.score===1) ? statMsg=" star collected." : statMsg=" stars collected."
+    let statMsg = player.score===1 ? " star collected." : " stars collected.";
     document.getElementById('star_count').innerHTML=player.score+statMsg;
-    (player.gems===1) ? statMsg=" gem collected." : statMsg=" gems collected."
+    statMsg = player.gems===1 ? " gem collected." : " gems collected.";
     document.getElementById('gem_count').innerHTML=player.gems+statMsg;
     document.getElementById('turns_count').innerHTML=player.totalTurns+" turns played.";
 
@@ -449,7 +449,7 @@ function gameOver() {
         modal.style.display="none";
         //start game
         initPieces();
-    }
+    };
 
     window.onclick=function(event) {
         if (event.target===modal) {
@@ -457,7 +457,7 @@ function gameOver() {
             //start game
             initPieces();
         }
-    }
+    };
 }
 
 initPieces();
