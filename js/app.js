@@ -324,8 +324,17 @@ document.addEventListener('keyup', function(e) {
 
 //adds listener for menu option click
 document.addEventListener('click', function(e) {
-    if ((e.clientX>547 && e.clientX<613) && (e.clientY>547 && e.clientY<595)){
-            gameOptions();
+    let pos=getMousePos(e);
+    if ((pos.x>445 && pos.x<510) && (pos.y>545 && pos.y<590)){
+        gameOptions();
+    }
+    //get mouse pos relative to canvas
+    function getMousePos(e) {
+        let rect=document.getElementsByTagName('canvas')[0].getBoundingClientRect();
+        return {
+            x: e.clientX - rect.left,
+            y: e.clientY -rect.top
+        };
     }
 });
 
@@ -372,7 +381,6 @@ function gameOptions() {
     let okButton=document.querySelectorAll('#optionsModal #ok')[0];
     okButton.onclick=function() {
         modal.style.display="none";
-        console.log("should be closed");
         gameLevel=parseInt(getRadios('level'));
         initPieces(getRadios('charlist'));
 
@@ -390,7 +398,6 @@ function gameOptions() {
     window.onclick=function(event) {
         if (event.target===modal) {
             modal.style.display="none";
-            console.log("worked here")
         }
     };
 }

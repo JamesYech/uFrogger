@@ -27,5 +27,3 @@ The menu icon will open an options menu where you can change your avatar and the
 **  Notes  **
 
 Gems are generated randomly.  Every time a bug exits the grid there is a 10% chance a gem will be generated.  Once generated, a gem will stay in play until collected or until the game is over.  Only one gem at a time will be in play.
-
-
