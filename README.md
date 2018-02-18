@@ -8,7 +8,7 @@ This is the Frogger arcade game project from the Udacity Front-End Developers Na
 
 ** How to Load the Game **
 
-This game is web based.  You can clone the the respository (https://github.com/JamesYech/uFrogger.git) to your computer and launch the index.html file.  Or, navigate to http://www.jdtech.net/frogger .
+This game is web based.  You can clone the the respository (https://github.com/JamesYech/uFrogger.git) to your computer and launch the index.html file in your favorite browser (as long as your favorite browser is Chrome or FireFox).  Or, navigate to http://www.jdtech.net/frogger .
 
 
 ** How to Play **

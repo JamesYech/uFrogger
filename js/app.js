@@ -1,4 +1,9 @@
+'use strict';
 var allBugs=[];
+var rock,
+    player,
+    gem,
+    star;
 var gameLevel=1;
 
 //game entities are built from this
@@ -15,11 +20,7 @@ class Entity {
     }
 
     render() {
-        if (this.constructor.name==='Rock') {
-            ctx.drawImage(Resources.get(this.sprite), this.x+10, this.y+20, 80,136);
-        } else {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-        }
     }
 
     //check for contact with other objects
@@ -52,11 +53,7 @@ class Rock extends Entity {
     }
 
     render() {
-        super.render();
-    }
-
-    contact(movingObject,vector) {
-        return(super.contact(movingObject,vector));
+        ctx.drawImage(Resources.get(this.sprite), this.x+10, this.y+20, 80,136);
     }
 
     placement() {
@@ -70,14 +67,6 @@ class Star extends Entity {
         super(x,y,leftOffset,rightOffset,sprite);
     }
 
-    render() {
-        super.render();
-    }
-
-    contact(movingObject,vector) {
-        return(super.contact(movingObject,vector));
-    }
-
     placement() {
         this.y=0-10;  // -10 aligns star in the grid
         this.x=rndNumbers(0,5)*101;    //random col 1-5
@@ -89,14 +78,6 @@ class Bugs extends Entity {
         super(x,y,speed,leftOffset,rightOffset,bounce,sprite,dir);
         this.leftOffset=-15;
         this.rightOffset=15;
-    }
-
-    render() {
-        super.render();
-    }
-
-    contact(movingObject,vector) {
-        return(super.contact(movingObject,vector));
     }
 
     update(dt) {
@@ -177,14 +158,6 @@ class Gem extends Bugs {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y+38,65,111);
     }
 
-    contact(movingObject,vector) {
-        return(super.contact(movingObject,vector));
-    }
-
-    reset() {
-        super.reset();
-    }
-
     update(dt) {
         if (this.active) {
             this.x+=(Math.floor(this.speed*(dt*100)))*this.dir;
@@ -217,15 +190,11 @@ class Gem extends Bugs {
 
 class Player extends Entity {
     constructor(x,y,leftOffset,rightOffset,sprite) {
-        super(x,y,leftOffset,rightOffset,sprite);
+       super(x,y,leftOffset,rightOffset,sprite);
         this.livesLeft=3;
         this.score=0;
         this.gems=0;
         this.totalTurns=0;
-    }
-
-    contact(movingObject,vector) {
-        return(super.contact(movingObject,vector));
     }
 
     render() {
@@ -403,6 +372,7 @@ function gameOptions() {
     let okButton=document.querySelectorAll('#optionsModal #ok')[0];
     okButton.onclick=function() {
         modal.style.display="none";
+        console.log("should be closed");
         gameLevel=parseInt(getRadios('level'));
         initPieces(getRadios('charlist'));
 
@@ -420,6 +390,7 @@ function gameOptions() {
     window.onclick=function(event) {
         if (event.target===modal) {
             modal.style.display="none";
+            console.log("worked here")
         }
     };
 }
