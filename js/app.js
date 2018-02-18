@@ -324,8 +324,8 @@ document.addEventListener('keyup', function(e) {
 
 //adds listener for menu option click
 document.addEventListener('click', function(e) {
-    if (e.clientX>440 && e.clientY>540) {
-        gameOptions();
+    if ((e.clientX>547 && e.clientX<613) && (e.clientY>547 && e.clientY<595)){
+            gameOptions();
     }
 });
 
