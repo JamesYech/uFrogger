@@ -1,4 +1,4 @@
-var allEnemies=[];
+var allBugs=[];
 var gameLevel=1;
 
 //game entities are built from this
@@ -320,15 +320,15 @@ class Player extends Entity {
 }
 
 function resetBugs() {
-    allEnemies.map(bug => bug.reset());
+    allBugs.map(bug => bug.reset());
 }
 
 function initPieces(sprite='images/char1.png') {
-    allEnemies=[];
+    allBugs=[];
     for(let i=0, bugNum=gameLevel+2; i<bugNum; i++) {
-        let enemyObj=new Bugs('images/enemy-bug.png');
-        allEnemies.push(enemyObj);
-        enemyObj.reset();
+        let newBug=new Bugs('images/enemy-bug.png');
+        allBugs.push(newBug);
+        newBug.reset();
     }
 
     player=new Player(sprite,202,322);
